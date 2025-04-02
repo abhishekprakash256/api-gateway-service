@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException, ForbiddenException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CmsApiService } from '../cms-api/cms-login-api.service';
 
@@ -11,62 +11,95 @@ export class AuthService {
 
   // Login logic
   async login(username: string, password: string) {
-    // Check if user exists
-    const user = await this.cmsApiService.checkUser(username);
-    if (!user) throw new UnauthorizedException('User not found');
+    const user = await this.validateAndGetUser(username);
+    await this.validateUserCredentials(username, password);
 
-    // get the user password from the system
-    const response = await this.cmsApiService.getUserPassword(username);
-
-    console.log(response.hashed_password)
-    console.log(password)
-
-    // Verify password
-    const isPasswordValid = await this.cmsApiService.verifyPassword(password, response.hashed_password);
-    if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
-
-    // Generate JWT token
     return this.generateJwt(user);
   }
 
   // Signup logic
   async signup(username: string, password: string) {
-    // Check if user already exists
     const userExists = await this.cmsApiService.checkUser(username);
     if (userExists) throw new ConflictException('User already exists');
 
-    // Create the user in the Flask backend
     const user = await this.cmsApiService.createUser(username, password);
     return this.generateJwt(user);
   }
 
   // Update password logic
-  async updatePassword(username: string, oldPassword: string, newPassword: string) {
-    // Check if old password is valid
-    const isPasswordValid = await this.cmsApiService.verifyPassword(username, oldPassword);
-    if (!isPasswordValid) throw new UnauthorizedException('Invalid current password');
+  async updatePassword(username: string, oldPassword: string, newPassword: string, token: string) {
+    await this.validateJwtToken(token, username);
 
-    // Update password in Flask
+    const user = await this.validateAndGetUser(username);
+    await this.validateUserCredentials(username, oldPassword);
+
     await this.cmsApiService.updateUserPassword(username, newPassword);
     return { message: 'Password updated successfully' };
   }
 
-  // Delete user logic
-  async deleteUser(username: string, password: string) {
-    // Verify the password first
-    const isPasswordValid = await this.cmsApiService.verifyPassword(username, password);
-    if (!isPasswordValid) throw new UnauthorizedException('Invalid password');
+  // Recover user account
+  async recoverUser(username: string, token: string, newPassword: string, confirmPassword: string) {
+    const user = await this.validateAndGetUser(username);
+    
+    await this.validateTokenMatch(username, token);
+    
+    if (newPassword !== confirmPassword) throw new ConflictException('Passwords do not match');
 
-    // Delete the user from Flask
+    await this.cmsApiService.deleteUser(username);
+    return { message: 'User recovered successfully' };
+  }
+
+  // Delete user
+  async deleteUser(username: string, password: string, token: string) {
+    await this.validateJwtToken(token, username);
+
+    const user = await this.validateAndGetUser(username);
+    await this.validateUserCredentials(username, password);
+
     await this.cmsApiService.deleteUser(username);
     return { message: 'User deleted successfully' };
   }
 
-  // JWT token generation
+  // **Reusable Helper Functions**
+
+  // Validate and get user
+  private async validateAndGetUser(username: string) {
+    const user = await this.cmsApiService.checkUser(username);
+    if (!user) throw new UnauthorizedException('User not found');
+    return user;
+  }
+
+  // Validate user credentials (password verification)
+  private async validateUserCredentials(username: string, password: string) {
+    const response = await this.cmsApiService.getUserPassword(username);
+    const isPasswordValid = await this.cmsApiService.verifyPassword(password, response.hashed_password);
+
+    if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
+  }
+
+  // Validate if the provided token matches the stored token
+  private async validateTokenMatch(username: string, providedToken: string) {
+    const fetchToken = await this.cmsApiService.getUserHash(username);
+    if (providedToken !== fetchToken.user_token) {
+      throw new ForbiddenException('Invalid token');
+    }
+  }
+
+  // Validate JWT before performing actions
+  private async validateJwtToken(token: string, username: string) {
+    try {
+      const decoded = this.jwtService.verify(token);
+      if (decoded.username !== username) {
+        throw new ForbiddenException('Token does not match user');
+      }
+    } catch (error) {
+      throw new UnauthorizedException('Invalid or expired token');
+    }
+  }
+
+  // Generate JWT token
   private generateJwt(user: any) {
     const payload = { sub: user.id, username: user.username };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    return { access_token: this.jwtService.sign(payload) };
   }
 }

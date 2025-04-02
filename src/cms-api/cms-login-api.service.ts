@@ -27,37 +27,37 @@ export class CmsApiService {
 
   // Check if user exists
   async checkUser(username: string): Promise<any> {
-    return this.makeApiRequest('/check_user', { username });
+    return this.makeApiRequest('/check_user', { username : username });
   }
 
   // Verify user password
-  async verifyPassword(passedPassword: string, password: string): Promise<any> {
-    return this.makeApiRequest('/verify_password', { passedPassword, password });
+  async verifyPassword(passedPassword: string, hashedPassword: string): Promise<any> {
+    return this.makeApiRequest('/verify_password', { passed_password: passedPassword, hashed_password: hashedPassword });
   }
 
   // Get user password
   async getUserPassword(username: string): Promise<any> {
-    return this.makeApiRequest('/get_user_password', { username });
+    return this.makeApiRequest('/get_user_password', { username : username});
   }
 
   // Update user password
   async updateUserPassword(username: string, newPassword: string): Promise<any> {
-    return this.makeApiRequest('/update_user_password', { username, newPassword });
+    return this.makeApiRequest('/update_user_password', { username : username, new_passowrd : newPassword });
   }
 
   // Get user token (hash)
   async getUserHash(username: string): Promise<any> {
-    return this.makeApiRequest('/get_user_hash', { username });
+    return this.makeApiRequest('/get_user_hash', { username : username });
   }
 
   // Delete user
   async deleteUser(username: string): Promise<any> {
-    return this.makeApiRequest('/delete_user', { username });
+    return this.makeApiRequest('/delete_user', { username : username });
   }
 
   // Create a new user
   async createUser(username: string, password: string): Promise<any> {
-    return this.makeApiRequest('/create_user', { username, password });
+    return this.makeApiRequest('/create_user', { username : username, password : password });
   }
 
 }
