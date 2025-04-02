@@ -22,6 +22,8 @@ export class AuthService {
     const userExists = await this.cmsApiService.checkUser(username);
     if (userExists) throw new ConflictException('User already exists');
 
+    //user hash should be added as well
+
     const user = await this.cmsApiService.createUser(username, password);
     return this.generateJwt(user);
   }
