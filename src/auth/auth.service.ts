@@ -30,12 +30,22 @@ export class AuthService {
 
   // Update password logic
   async updatePassword(username: string, oldPassword: string, newPassword: string, token: string) {
+    
+    console.log("in")
+    console.log(username)
+
     await this.validateJwtToken(token, username);
+
+    console.log("in1")
 
     const user = await this.validateAndGetUser(username);
     await this.validateUserCredentials(username, oldPassword);
 
+    console.log("in2")
+
     await this.cmsApiService.updateUserPassword(username, newPassword);
+
+    console.log("in3")
     return { message: 'Password updated successfully' };
   }
 
