@@ -19,10 +19,11 @@ export class AuthService {
 
   // Signup logic
   async signup(username: string, password: string) {
-    const userExists = await this.cmsApiService.checkUser(username);
-    if (userExists) throw new ConflictException('User already exists');
 
-    //user hash should be added as well
+    const result = await this.cmsApiService.checkUser(username);
+    
+    if (result.userExists) throw new ConflictException('User already exists');
+    
 
     const user = await this.cmsApiService.createUser(username, password);
     return this.generateJwt(user);
