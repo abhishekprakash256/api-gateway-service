@@ -21,7 +21,7 @@ export class AuthService {
   async signup(username: string, password: string) {
 
     const result = await this.cmsApiService.checkUser(username);
-    
+
     if (result.userExists) throw new ConflictException('User already exists');
     
 
