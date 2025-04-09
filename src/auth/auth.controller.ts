@@ -39,8 +39,12 @@ export class AuthController {
   async updatePassword(
     @Body() body: { username: string; oldPassword: string; newPassword: string; token: string }
   ) {
-    console.log("in")
+    
     if (!body.username || !body.oldPassword || !body.newPassword || !body.token) {
+      console.log(body.username)
+      console.log(body.oldPassword)
+      console.log(body.newPassword)
+      console.log(body.token)
       return { status: 'error', message: 'All fields are required' };
     }
     return this.authService.updatePassword(body.username, body.oldPassword, body.newPassword, body.token);
