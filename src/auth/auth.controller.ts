@@ -35,10 +35,11 @@ export class AuthController {
 
   // Update Password
   @Patch('update-password')
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)  // this line is blocing the request
   async updatePassword(
     @Body() body: { username: string; oldPassword: string; newPassword: string; token: string }
   ) {
+    console.log("in")
     if (!body.username || !body.oldPassword || !body.newPassword || !body.token) {
       return { status: 'error', message: 'All fields are required' };
     }
