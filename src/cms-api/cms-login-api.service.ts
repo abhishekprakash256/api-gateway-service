@@ -42,6 +42,8 @@ export class CmsApiService {
 
   // Update user password
   async updateUserPassword(username: string, newPassword: string): Promise<any> {
+    console.log("in updateUserPassword");
+    console.log(newPassword);
     return this.makeApiRequest('/update_user_password', { username : username, new_passowrd : newPassword });
   }
 

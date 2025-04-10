@@ -34,6 +34,7 @@ export class AuthService {
     
     console.log("in")
     console.log(username)
+    console.log(token)
 
     await this.validateJwtToken(token, username);
 
@@ -78,6 +79,8 @@ export class AuthService {
   // Validate and get user
   private async validateAndGetUser(username: string) {
     const user = await this.cmsApiService.checkUser(username);
+    console.log("In the vaklidate and get user");
+    console.log(user.Username) ; 
     if (!user) throw new UnauthorizedException('User not found');
     return user;
   }
@@ -101,18 +104,27 @@ export class AuthService {
   // Validate JWT before performing actions
   private async validateJwtToken(token: string, username: string) {
     try {
+      console.log('Validating token:', token);
       const decoded = this.jwtService.verify(token);
+      console.log('Decoded token:', decoded);
+  
+      if (!decoded.username) {
+        throw new UnauthorizedException('Token does not contain username');
+      }
+  
       if (decoded.username !== username) {
+        console.error('Token does not match user:', decoded.username, username);
         throw new ForbiddenException('Token does not match user');
       }
     } catch (error) {
+      console.error('JWT verification error:', error.message);
       throw new UnauthorizedException('Invalid or expired token');
     }
   }
 
-  // Generate JWT token
   private generateJwt(user: any) {
+    console.log('User object during token generation:', user , user.username);
     const payload = { sub: user.id, username: user.username };
-    return { access_token: this.jwtService.sign(payload) };
+    return { access_token: this.jwtService.sign(payload, { expiresIn: '1h' }) };
   }
 }
