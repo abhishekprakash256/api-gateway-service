@@ -44,7 +44,7 @@ export class CmsApiService {
   async updateUserPassword(username: string, newPassword: string): Promise<any> {
     console.log("in updateUserPassword");
     console.log(newPassword);
-    return this.makeApiRequest('/update_user_password', { username : username, new_passowrd : newPassword });
+    return this.makeApiRequest('/update_user_password', { username , newPassword  });
   }
 
   // Get user token (hash)
