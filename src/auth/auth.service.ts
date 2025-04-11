@@ -64,11 +64,13 @@ export class AuthService {
   }
 
   // Delete user
-  async deleteUser(username: string, password: string, token: string) {
-    //console.log("in delete user");
+  async deleteUser(username: string, password: string, userhash: string) {
+    console.log("in delete user");
     //await this.validateJwtToken(token, username);
 
-    await this.validateTokenMatch(token, username);
+    
+
+    await this.validateTokenMatch(userhash, username);
 
     // get the user hash
     //const fetchToken = await this.cmsApiService.getUserHash(username);
