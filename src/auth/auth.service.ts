@@ -68,6 +68,10 @@ export class AuthService {
     console.log("in delete user");
     await this.validateJwtToken(token, username);
 
+    // get the user hash
+    const fetchToken = await this.cmsApiService.getUserHash(username);
+    console.log(fetchToken.user_token);
+
     const user = await this.validateAndGetUser(username);
     await this.validateUserCredentials(username, password);
 
