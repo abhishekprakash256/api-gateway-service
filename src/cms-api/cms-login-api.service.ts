@@ -49,7 +49,7 @@ export class CmsApiService {
 
   // Get user token (hash)
   async getUserHash(username: string): Promise<any> {
-    return this.makeApiRequest('get_user_hash', { username : username });
+    return this.makeApiRequest('get_user_token', { username : username });
   }
 
   // Delete user

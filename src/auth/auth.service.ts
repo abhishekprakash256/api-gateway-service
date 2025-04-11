@@ -65,12 +65,16 @@ export class AuthService {
 
   // Delete user
   async deleteUser(username: string, password: string, token: string) {
-    console.log("in delete user");
-    await this.validateJwtToken(token, username);
+    //console.log("in delete user");
+    //await this.validateJwtToken(token, username);
+
+    await this.validateTokenMatch(token, username);
 
     // get the user hash
-    const fetchToken = await this.cmsApiService.getUserHash(username);
-    console.log(fetchToken.user_token);
+    //const fetchToken = await this.cmsApiService.getUserHash(username);
+    //console.log(fetchToken.user_token);
+
+    /// use the user hash to validate the token
 
     const user = await this.validateAndGetUser(username);
     await this.validateUserCredentials(username, password);
@@ -98,7 +102,7 @@ export class AuthService {
     const isPasswordValid = await this.cmsApiService.verifyPassword(password, response.hashed_password);
 
     if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
-  }
+  } 
 
   // Validate if the provided token matches the stored token
   private async validateTokenMatch(username: string, providedToken: string) {
