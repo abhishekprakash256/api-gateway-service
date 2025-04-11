@@ -51,7 +51,7 @@ export class AuthService {
     return { message: 'Password updated successfully' };
   }
 
-  // Recover user account
+  // Recover user account wrong implementation
   async recoverUser(username: string, token: string, newPassword: string, confirmPassword: string) {
     const user = await this.validateAndGetUser(username);
     
@@ -65,10 +65,13 @@ export class AuthService {
 
   // Delete user
   async deleteUser(username: string, password: string, token: string) {
+    console.log("in delete user");
     await this.validateJwtToken(token, username);
 
     const user = await this.validateAndGetUser(username);
     await this.validateUserCredentials(username, password);
+
+    console.log("in delete user1");
 
     await this.cmsApiService.deleteUser(username);
     return { message: 'User deleted successfully' };

@@ -62,8 +62,8 @@ export class AuthController {
   }
 
   // Delete User Account
-  @Delete('delete')
-  @UseGuards(JwtAuthGuard)
+  @Post('delete')
+  //@UseGuards(JwtAuthGuard)
   async deleteUser(@Body() body: { username: string; password: string; token: string }) {
     if (!body.username || !body.password || !body.token) {
       return { status: 'error', message: 'Username, password, and token are required' };
