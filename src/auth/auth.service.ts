@@ -53,13 +53,15 @@ export class AuthService {
 
   // Recover user account wrong implementation
   async recoverUser(username: string, token: string, newPassword: string, confirmPassword: string) {
+    
     const user = await this.validateAndGetUser(username);
     
     await this.validateTokenMatch(username, token);
     
     if (newPassword !== confirmPassword) throw new ConflictException('Passwords do not match');
 
-    await this.cmsApiService.deleteUser(username);
+    await this.cmsApiService.updateUserPassword(username , newPassword);
+
     return { message: 'User recovered successfully' };
   }
 
