@@ -64,13 +64,12 @@ export class AuthService {
   }
 
   // Delete user
-  async deleteUser(username: string, password: string, userhash: string) {
+  async deleteUser(username: string, password: string, token: string) {
     console.log("in delete user");
+
     //await this.validateJwtToken(token, username);
 
-    
-
-    await this.validateTokenMatch(userhash, username);
+    await this.validateTokenMatch(username , token);
 
     // get the user hash
     //const fetchToken = await this.cmsApiService.getUserHash(username);
@@ -92,8 +91,8 @@ export class AuthService {
   // Validate and get user
   private async validateAndGetUser(username: string) {
     const user = await this.cmsApiService.checkUser(username);
-    console.log("In the vaklidate and get user");
-    console.log(user.Username) ; 
+    console.log("In the validate and get user");
+    console.log(user.username) ; 
     if (!user) throw new UnauthorizedException('User not found');
     return user;
   }
