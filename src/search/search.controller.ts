@@ -1,10 +1,11 @@
-import { Controller , Get, Param } from '@nestjs/common';
+import { Controller , Get, Param , Query} from '@nestjs/common';
 
 @Controller('search')
 export class SearchController {
-    @Get(':keyword')  // ✅ Corrected to match /section/:category
-    async findAll(@Param('keyword') keyword: string): Promise<any> {
-        const url = `http://localhost:5000/mongo/search/${keyword}`;  
+    @Get()  // ✅ Corrected to match /section/:category
+    async findAll(@Query('keyword') keyword: string): Promise<any> {
+
+        const url = `http://localhost:5000/mongo/blog/search?keyword=${encodeURIComponent(keyword)}`;;  
         
         try {
             const response = await fetch(url);
