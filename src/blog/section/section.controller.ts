@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 
-@Controller('section')  // Base route: /section
+@Controller('blog/section')  // Base route: /section
 export class SectionController {
 
     /**

@@ -55,7 +55,7 @@ GET /search?keyword=ai%20tools
 ## 2️⃣ **Explore Section**
 
 **Endpoint:**
-`GET /section/explore`
+`GET blog/section/explore`
 
 **Description:**
 Fetches a list of articles from the "explore" section.
@@ -69,7 +69,7 @@ Fetches a list of articles from the "explore" section.
 **Example Request:**
 
 ```
-GET /section/explore?limit=10
+GET blog/section/explore?limit=10
 ```
 
 **Example Response:**
@@ -90,7 +90,7 @@ GET /section/explore?limit=10
 ## 3️⃣ **Get Articles by Category**
 
 **Endpoint:**
-`GET /section/:category`
+`GET blog/section/:category`
 
 **Description:**
 Fetches a paginated list of articles for a specific category.
@@ -111,7 +111,7 @@ Fetches a paginated list of articles for a specific category.
 **Example Request:**
 
 ```
-GET /section/technology?page=1&limit=5
+GET blog/section/technology?page=1&limit=5
 ```
 
 **Example Response:**
@@ -137,7 +137,7 @@ GET /section/technology?page=1&limit=5
 ## 4️⃣ **Get a Specific Article**
 
 **Endpoint:**
-`GET /section/:category/article/:articleName`
+`GET blog/section/:category/article/:articleName`
 
 **Description:**
 Fetches a specific article by category and article name.
@@ -152,7 +152,7 @@ Fetches a specific article by category and article name.
 **Example Request:**
 
 ```
-GET /section/technology/article/ai-tools
+GET blog/section/technology/article/ai-tools
 ```
 
 **Example Response:**
