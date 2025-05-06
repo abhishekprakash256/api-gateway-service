@@ -6,7 +6,7 @@ export class SectionController {
     /**
      * Fetches the 'explore' section data.
      * 
-     * Route: GET /section/explore
+     * Route: GET blog/section/explore
      * 
      * Description:
      * Calls the Flask backend at `/mongo/blog/section/explore` to retrieve 
@@ -42,7 +42,7 @@ export class SectionController {
     /**
      * Fetches paginated articles within a specific category.
      * 
-     * Route: GET /section/:category
+     * Route: GET blog/section/:category
      * 
      * Description:
      * Calls the Flask backend to retrieve articles under a given category, 
@@ -89,7 +89,7 @@ export class SectionController {
     /**
      * Fetches a specific article within a category.
      * 
-     * Route: GET /section/:category/article/:articleName
+     * Route: GET blog/section/:category/article/:articleName
      * 
      * Description:
      * Calls the Flask backend to retrieve a single article by its name within 

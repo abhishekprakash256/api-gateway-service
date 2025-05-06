@@ -62,7 +62,12 @@ $ npm run test:cov
 
 ```bash
 npm run build
+
 ```
+
+## Note
+
+**Before pushing code run test, build and push the code**
 
 ## Deployment
 
