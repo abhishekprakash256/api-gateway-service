@@ -57,6 +57,20 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+
+## Build Command 
+
+```bash
+npm run build
+
+```
+
+## Note
+
+**Before pushing code run test, build and push the code**
+
+- for the production server use the ports carefully to match the dev and production such as in mongo access and api gateway
+
 ## Deployment
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
