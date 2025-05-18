@@ -1,0 +1,17 @@
+[Unit]
+Description=Api Gateway service
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/api-gateway-service
+ExecStart=/usr/bin/npm start prod
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
